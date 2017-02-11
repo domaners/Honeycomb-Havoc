@@ -10,7 +10,7 @@ public class Character {
 	
 	public enum CharacterType { HONEYCOMB, WASP };
 	
-	CharacterType charType;
+	public CharacterType charType;
 	float x, y;
 	private Texture currentFrame;
 	private Rectangle hitbox;
@@ -39,7 +39,7 @@ public class Character {
 		hitbox = new Rectangle(this.x, this.y, currentFrame.getWidth(), currentFrame.getHeight());
 	}
 	
-	Character(Texture t, CharacterType type) {
+	public Character(Texture t, CharacterType type) {
 		this.charType = type;
 		this.currentFrame = t;
 		this.x = (float) (Math.random() * Honeycomber.WORLD_WIDTH) - (this.getTexture().getWidth());
