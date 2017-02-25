@@ -3,7 +3,7 @@ package com.domaners.honeycomber.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.domaners.honeycomber.Player;
+import com.domaners.honeycomber.characters.Player;
 
 public class GameInput {
 	

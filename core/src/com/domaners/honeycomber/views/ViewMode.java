@@ -1,6 +1,6 @@
 package com.domaners.honeycomber.views;
 
-import static com.domaners.honeycomber.Honeycomber.*;
+import static com.domaners.honeycomber.Main.*;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;

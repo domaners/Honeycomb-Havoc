@@ -3,7 +3,7 @@ package com.domaners.honeycomber.views;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.GL20;
-import com.domaners.honeycomber.Honeycomber;
+import com.domaners.honeycomber.Main;
 import com.domaners.honeycomber.input.DeathScreenInput;
 
 public class DeathScreen implements ViewMode {
@@ -12,7 +12,7 @@ public class DeathScreen implements ViewMode {
 	
 	public DeathScreen(long gameScore) {
 		this.gameScore = gameScore;
-		Honeycomber.setHiScore(gameScore);
+		Main.setHiScore(gameScore);
 	}
 	
 	@Override
@@ -22,10 +22,14 @@ public class DeathScreen implements ViewMode {
 
 		batch.setProjectionMatrix(cam.combined);
 		batch.begin();
-		font.draw(batch, "PRESS 'S' TO RESTART", 0, 150);
-		font.draw(batch, "YOU BE DEDD", 0, 100);
+		if(Gdx.app.getType() == ApplicationType.Desktop) {
+			font.draw(batch, "PRESS 'S' TO RESTART", 0, 150);
+		} else if (Gdx.app.getType() == ApplicationType.Android) {
+			font.draw(batch, "TOUCH THE SCREEN TO RESTART", 0, 150);
+		}
+		font.draw(batch, "YOU BEE DEDD", 0, 100);
 		font.draw(batch, "   Score: " + gameScore, 0, 50);
-		font.draw(batch, "Hi Score: " + Honeycomber.getHiScore(), 0, 70);
+		font.draw(batch, "Hi Score: " + Main.getHiScore(), 0, 70);
 		batch.end();
 		
 		if(Gdx.app.getType() == ApplicationType.Desktop) {

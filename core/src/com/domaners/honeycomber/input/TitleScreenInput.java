@@ -3,12 +3,12 @@ package com.domaners.honeycomber.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.domaners.honeycomber.Main;
-import com.domaners.honeycomber.views.*;
+import com.domaners.honeycomber.views.InGame;
 
-public class DeathScreenInput {
-
+public class TitleScreenInput {
+	
 	public static void Keyboard() {
-		if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 			Main.viewMode = new InGame();
 		}
 	}

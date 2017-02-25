@@ -8,18 +8,20 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.domaners.honeycomber.Character;
 
-import static com.domaners.honeycomber.Honeycomber.*;
-import com.domaners.honeycomber.Player;
-import com.domaners.honeycomber.Character.CharacterType;
-import com.domaners.honeycomber.Honeycomber;
+import static com.domaners.honeycomber.Main.*;
+
+import com.domaners.honeycomber.characters.Character;
+import com.domaners.honeycomber.characters.Coin;
+import com.domaners.honeycomber.characters.Player;
+import com.domaners.honeycomber.characters.Wasp;
+import com.domaners.honeycomber.Main;
 import com.domaners.honeycomber.input.GameInput;
 
 public class InGame implements ViewMode {
 
 	static final int MAX_COLLECTIBLES = 10;
-	static long gameScore;
+	public static long gameScore;
     static long startTime;
     
     Player p;
@@ -32,13 +34,13 @@ public class InGame implements ViewMode {
 		
 		startTime = TimeUtils.millis();
         
-        p = new Player(0f, 0f, new Texture(Gdx.files.internal("player.jpg")));
+        p = new Player(0f, 0f);
         gameScore = 0;
-        bg = new Sprite(new Texture(Gdx.files.internal("background.jpg")), WORLD_WIDTH, WORLD_HEIGHT);
+        bg = new Sprite(new Texture(Gdx.files.internal("Sky.png")), WORLD_WIDTH, WORLD_HEIGHT);
         bg.setX(0f);
         bg.setY(0f);
         
-        addHoneycomb();
+        // addHoneycomb();
         
 	}
 	
@@ -49,13 +51,20 @@ public class InGame implements ViewMode {
 
 		batch.setProjectionMatrix(cam.combined);
 		batch.begin();
-		batch.draw(bg, bg.getX(), bg.getY());
+		batch.draw(bg, bg.getX(), bg.getY(), WORLD_WIDTH, WORLD_HEIGHT);
 		font.draw(batch, "   Score: " + gameScore, 0, 50);
-		font.draw(batch, "Hi Score: " + Honeycomber.getHiScore(), 0, 70);
-		
-		batch.draw(p.getTexture(), p.getX(), p.getY());
-		for(Character ch : co) { 
-			batch.draw(ch.getTexture(), ch.getX(), ch.getY());
+		font.draw(batch, "Hi Score: " + Main.getHiScore(), 0, 70);
+		batch.draw(p.getSprite(), p.getX(), p.getY(), p.getWidth(), p.getHeight());
+		for(Character ch : co) {
+			if(ch instanceof Wasp) {
+				if(ch.getX() < (0f - ch.getWidth())) {
+					co.remove(ch);
+					break;
+				} else {
+					ch.setX(ch.getX() - ch.getMovementSpeed());
+				}
+			}
+			batch.draw(ch.getSprite().getTexture(), ch.getX(), ch.getY(), ch.getWidth(), ch.getWidth());
 		}
 		batch.end();
 		
@@ -80,11 +89,12 @@ public class InGame implements ViewMode {
 		for(int i = 0; i < cha.size(); i++) {
 			boolean b = cha.get(i).getHitbox().overlaps(p.getHitbox());
 			if(b) {
-				if(cha.get(i).charType == CharacterType.HONEYCOMB) {
+				System.out.println("COIN!");
+				if(cha.get(i) instanceof Coin) {
 					gameScore += cha.get(i).getPoints();
 					cha.remove(i);
-				} else if (cha.get(i).charType == CharacterType.WASP) {
-					Honeycomber.viewMode = new DeathScreen(gameScore);
+				} else if (cha.get(i) instanceof Wasp) {
+					Main.viewMode = new DeathScreen(gameScore);
 				}
 			}
 		}
@@ -93,10 +103,10 @@ public class InGame implements ViewMode {
 	private void addHoneycomb() {
 		if(co.size() < MAX_COLLECTIBLES) {
 			float rand = (float)Math.random() * 10;
-			if(rand <= 9.0f) {
-				co.add(new Character(new Texture(Gdx.files.internal("honeycomb.jpg")), CharacterType.HONEYCOMB));
+			if(rand <= 7.0f) {
+				co.add(new Coin(0f, 0f));
 			} else {
-				co.add(new Character(new Texture(Gdx.files.internal("wasp.jpg")), CharacterType.WASP));
+				co.add(new Wasp());
 			}
 		}
 	}
