@@ -91,4 +91,9 @@ public class Coin implements Character {
 		return 0;
 	}
 
+	@Override
+	public void setPoints(int points) {
+		this.points = points;
+	}
+
 }

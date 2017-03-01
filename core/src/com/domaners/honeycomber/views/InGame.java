@@ -63,8 +63,17 @@ public class InGame implements ViewMode {
 				} else {
 					ch.setX(ch.getX() - ch.getMovementSpeed());
 				}
+			} else if (ch instanceof Coin) {
+				if(ch.getPoints() <= 0) {
+					co.remove(ch);
+					break;
+				} else {
+					ch.setPoints(ch.getPoints() - 1);
+				}
 			}
 			batch.draw(ch.getSprite().getTexture(), ch.getX(), ch.getY(), ch.getWidth(), ch.getWidth());
+			if(Main.debug)
+				font.draw(batch, Integer.toString(ch.getPoints()), ch.getX(), ch.getY());
 		}
 		batch.end();
 		

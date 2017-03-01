@@ -23,7 +23,7 @@ public class Player implements Character {
 		currentFrame = new Sprite(new Texture(Gdx.files.internal("player.png")));
 		width = 80;
 		height = 80;
-		hitbox = new Rectangle(x, y, height, width);
+		hitbox = new Rectangle(x + collisionOffset, y + collisionOffset, height - (collisionOffset * 2), width - (collisionOffset * 2));
 		this.x = x;
 		this.y = y;
 	}
@@ -41,7 +41,7 @@ public class Player implements Character {
 		float worldWidth = Main.WORLD_WIDTH;
 		if(x > 0 && x < worldWidth - frameWidth) {
 			this.x = x;
-			this.hitbox.x = x;
+			this.hitbox.x = x + collisionOffset;
 		}
 	}
 	
@@ -50,7 +50,7 @@ public class Player implements Character {
 		float worldHeight = Main.WORLD_HEIGHT;
 		if(y > 0 && y < worldHeight - frameHeight) {
 			this.y = y;
-			this.hitbox.y = y;
+			this.hitbox.y = y + collisionOffset;
 		}
 	}
 
@@ -99,6 +99,12 @@ public class Player implements Character {
 	public float getMovementSpeed() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void setPoints(int points) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

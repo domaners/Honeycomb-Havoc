@@ -19,7 +19,6 @@ public class DeathScreen implements ViewMode {
 	public void render() {
 
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 		batch.setProjectionMatrix(cam.combined);
 		batch.begin();
 		if(Gdx.app.getType() == ApplicationType.Desktop) {

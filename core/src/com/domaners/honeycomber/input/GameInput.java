@@ -9,20 +9,18 @@ public class GameInput {
 	
 	public static void Keyboard(Player p, OrthographicCamera cam) {
 		
-		float x = p.getHitbox().getX();
-		float y = p.getHitbox().getY();
-		
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			p.setX(x -= Player.MOVEMENT_SPEED);
+			p.setY(p.getY() + Player.MOVEMENT_SPEED);
+			p.setX(p.getX() - Player.MOVEMENT_SPEED);
+			p.setLeft(true);
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			p.setX(x += Player.MOVEMENT_SPEED);
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			p.setY(y -= Player.MOVEMENT_SPEED);
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			p.setY(y += Player.MOVEMENT_SPEED);
+			p.setY(p.getY() + Player.MOVEMENT_SPEED);
+			p.setX(p.getX() + Player.MOVEMENT_SPEED);
+			p.setLeft(false);
+		} 
+		if(!Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+			p.setY(p.getY() - Player.MOVEMENT_SPEED);
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.Z)) {
 			if(cam.zoom <= 3.0) {

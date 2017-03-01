@@ -24,7 +24,7 @@ public class Wasp implements Character {
 		height = 100;
 		this.y = (float)(Math.random() * (Main.WORLD_HEIGHT - height));
 		this.x = Main.WORLD_WIDTH;
-		hitbox = new Rectangle((float)this.x, (float)this.y, height, width);
+		hitbox = new Rectangle((float)this.x + 10, (float)this.y + 10, height - 20, width - 20);
 		MOVEMENT_SPEED = (float) (InGame.gameScore / 2000) + 2.0f;
 	}
 	
@@ -85,6 +85,12 @@ public class Wasp implements Character {
 	public float getMovementSpeed() {
 		// TODO Auto-generated method stub
 		return this.MOVEMENT_SPEED;
+	}
+
+	@Override
+	public void setPoints(int points) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

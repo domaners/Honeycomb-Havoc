@@ -12,10 +12,12 @@ public interface Character {
 	public int height = 0;
 	public int width = 0;
 	int points = 0;
+	int collisionOffset = 10;
 	
 	public Rectangle getHitbox();
 	public void setHitbox(Rectangle hitbox);
 	public int getPoints();
+	public void setPoints(int points);
 	public float getMovementSpeed();
 	
 	public Sprite getSprite();
