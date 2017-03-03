@@ -31,51 +31,49 @@ public class InGame implements ViewMode {
 	public InGame() {
 		
 		cam.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
-		
 		startTime = TimeUtils.millis();
-        
-        p = new Player(0f, 0f);
+		p = new Player(0f, 0f);
         gameScore = 0;
         bg = new Sprite(new Texture(Gdx.files.internal("Sky.png")), WORLD_WIDTH, WORLD_HEIGHT);
         bg.setX(0f);
         bg.setY(0f);
-        
-        // addHoneycomb();
         
 	}
 	
 	@Override
 	public void render() {
 
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		batch.setProjectionMatrix(cam.combined);
-		batch.begin();
-		batch.draw(bg, bg.getX(), bg.getY(), WORLD_WIDTH, WORLD_HEIGHT);
-		font.draw(batch, "   Score: " + gameScore, 0, 50);
-		font.draw(batch, "Hi Score: " + Main.getHiScore(), 0, 70);
-		batch.draw(p.getSprite(), p.getX(), p.getY(), p.getWidth(), p.getHeight());
-		for(Character ch : co) {
-			if(ch instanceof Wasp) {
-				if(ch.getX() < (0f - ch.getWidth())) {
-					co.remove(ch);
-					break;
-				} else {
-					ch.setX(ch.getX() - ch.getMovementSpeed());
+		if(TimeUtils.timeSinceMillis(screenRefreshTime) > Main.REFRESH_RATE) {
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	
+			batch.setProjectionMatrix(cam.combined);
+			batch.begin();
+			batch.draw(bg, bg.getX(), bg.getY(), WORLD_WIDTH, WORLD_HEIGHT);
+			font.draw(batch, "   Score: " + gameScore, 0, 50);
+			font.draw(batch, "Hi Score: " + Main.getHiScore(), 0, 70);
+			batch.draw(p.getSprite(), p.getX(), p.getY(), p.getWidth(), p.getHeight());
+			for(Character ch : co) {
+				if(ch instanceof Wasp) {
+					if(ch.getX() < (0f - ch.getWidth())) {
+						co.remove(ch);
+						break;
+					} else {
+						ch.setX(ch.getX() - ch.getMovementSpeed());
+					}
+				} else if (ch instanceof Coin) {
+					if(ch.getPoints() <= 0) {
+						co.remove(ch);
+						break;
+					} else {
+						ch.setPoints(ch.getPoints() - 1);
+					}
 				}
-			} else if (ch instanceof Coin) {
-				if(ch.getPoints() <= 0) {
-					co.remove(ch);
-					break;
-				} else {
-					ch.setPoints(ch.getPoints() - 1);
-				}
+				batch.draw(ch.getSprite().getTexture(), ch.getX(), ch.getY(), ch.getWidth(), ch.getWidth());
+				if(Main.debug)
+					font.draw(batch, Integer.toString(ch.getPoints()), ch.getX(), ch.getY());
 			}
-			batch.draw(ch.getSprite().getTexture(), ch.getX(), ch.getY(), ch.getWidth(), ch.getWidth());
-			if(Main.debug)
-				font.draw(batch, Integer.toString(ch.getPoints()), ch.getX(), ch.getY());
+			batch.end();
 		}
-		batch.end();
 		
 		if (TimeUtils.timeSinceMillis(startTime) > 1000) { 
 			addHoneycomb();

@@ -12,9 +12,10 @@ public class Main extends ApplicationAdapter {
 	public static final int WORLD_WIDTH = 450;
     public static final int WORLD_HEIGHT = 800;
     private static long hiScore = 0;
-    public static final String BUILD_NO = "v0.05";
+    public static final String BUILD_NO = "v0.06";
 	public static final boolean debug = true;
 	public static Preferences prefs;
+	public static final long REFRESH_RATE = 1000 / 30; // 30 FPS animation speed
     
 	@Override
 	public void create () {
@@ -27,12 +28,14 @@ public class Main extends ApplicationAdapter {
 		}
 		Gdx.graphics.setWindowedMode(WORLD_WIDTH, WORLD_HEIGHT);
 		Gdx.graphics.setTitle("Honeycomb Havoc");
-		viewMode = new TitleScreen();
 		
 	}
 
 	@Override
 	public void render () {
+		if(viewMode == null)
+			viewMode = new TitleScreen();
+		
 		viewMode.render();
 	}
 	
