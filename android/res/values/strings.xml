@@ -2,5 +2,7 @@
 <resources>
 
     <string name="app_name">Honeycomb Havoc</string>
-
+    <string name="app_id">434429284316</string>
+	<string name="leaderboard_id">CgkI3J-DsNIMEAIQAA</string>
+	
 </resources>
