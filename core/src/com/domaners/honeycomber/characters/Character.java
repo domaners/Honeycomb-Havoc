@@ -1,5 +1,6 @@
 package com.domaners.honeycomber.characters;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -13,12 +14,14 @@ public interface Character {
 	public int width = 0;
 	int points = 0;
 	int collisionOffset = 10;
+	Sound collisionSound = null;
 	
 	public Rectangle getHitbox();
 	public void setHitbox(Rectangle hitbox);
 	public int getPoints();
 	public void setPoints(int points);
 	public float getMovementSpeed();
+	public Sound getCollisionSound();
 	
 	public Sprite getSprite();
 	public float getX();

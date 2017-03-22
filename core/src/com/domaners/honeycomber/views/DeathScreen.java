@@ -3,16 +3,21 @@ package com.domaners.honeycomber.views;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.domaners.honeycomber.Main;
 import com.domaners.honeycomber.input.DeathScreenInput;
 
 public class DeathScreen implements ViewMode {
 
 	public long gameScore;
+	static long startTime;
+	static long waitTimeMillis;
 	
 	public DeathScreen(long gameScore) {
 		this.gameScore = gameScore;
 		Main.setHiScore(gameScore);
+		startTime = TimeUtils.millis();
+		waitTimeMillis = 500L;
 	}
 	
 	@Override
@@ -31,10 +36,12 @@ public class DeathScreen implements ViewMode {
 		font.draw(batch, "Hi Score: " + Main.getHiScore(), 0, 70);
 		batch.end();
 		
-		if(Gdx.app.getType() == ApplicationType.Desktop) {
-			DeathScreenInput.Keyboard();
-		} else if (Gdx.app.getType() == ApplicationType.Android) {
-			DeathScreenInput.Touch();
+		if(TimeUtils.timeSinceMillis(startTime) > waitTimeMillis) {
+			if(Gdx.app.getType() == ApplicationType.Desktop) {
+				DeathScreenInput.Keyboard();
+			} else if (Gdx.app.getType() == ApplicationType.Android) {
+				DeathScreenInput.Touch();
+			}
 		}
 		
 		cam.update();

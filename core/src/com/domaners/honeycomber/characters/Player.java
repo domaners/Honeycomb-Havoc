@@ -1,9 +1,11 @@
 package com.domaners.honeycomber.characters;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.domaners.honeycomber.Main;
 
 public class Player implements Character {
@@ -15,17 +17,26 @@ public class Player implements Character {
 	public int width;
 	public int height;
 	int points;
-	
-	public static final float MOVEMENT_SPEED = 3.0f;
+	private Sound collisionSound, buzzSound;
+	public float MOVEMENT_SPEED_Y = 3.0f;
+	public float MOVEMENT_SPEED_X = 0.0f;
 	private boolean goLeft = true;
-	
+	long accelerationRateMillisX, accelerationRateMillisY;
+	long accelerationRefreshTimeX = TimeUtils.millis();
+	long accelerationRefreshTimeY = TimeUtils.millis();
+
 	public Player(float x, float y) {
+		buzzSound = Gdx.audio.newSound(Gdx.files.internal("sounds/playerBuzz.wav"));
 		currentFrame = new Sprite(new Texture(Gdx.files.internal("player.png")));
 		width = 80;
 		height = 80;
 		hitbox = new Rectangle(x + collisionOffset, y + collisionOffset, height - (collisionOffset * 2), width - (collisionOffset * 2));
 		this.x = x;
 		this.y = y;
+		accelerationRateMillisX = 1L;
+		accelerationRefreshTimeX = TimeUtils.millis();
+		accelerationRateMillisY = 1L;
+		accelerationRefreshTimeY = TimeUtils.millis();
 	}
 	
 	public boolean isLeft() {
@@ -36,21 +47,55 @@ public class Player implements Character {
 		this.goLeft = goLeft;
 	}
 	
-	public void setX(float x) {
-		float frameWidth = width;
+	public void moveX(boolean movedByPlayer) {
+		float frameWidth = this.width;
 		float worldWidth = Main.WORLD_WIDTH;
-		if(x > 0 && x < worldWidth - frameWidth) {
-			this.x = x;
-			this.hitbox.x = x + collisionOffset;
+		this.updateMovementSpeedX(movedByPlayer);
+		this.x = this.x + this.MOVEMENT_SPEED_X;
+		if(x < 0)
+			x = 0;
+		else if (x > worldWidth - frameWidth)
+			x = worldWidth - frameWidth;
+		this.hitbox.x = x + collisionOffset;
+	}
+	
+	public void updateMovementSpeedX(boolean increaseMomentum) {
+		if(TimeUtils.timeSinceMillis(this.accelerationRefreshTimeX) > this.accelerationRateMillisX) {
+			this.accelerationRefreshTimeX = TimeUtils.millis();
+			if(increaseMomentum) {
+				if(goLeft && this.MOVEMENT_SPEED_X >= -3.0F)
+					this.MOVEMENT_SPEED_X = this.MOVEMENT_SPEED_X - 0.2f;
+				else if(!goLeft && this.MOVEMENT_SPEED_X <= 3.0F)
+					this.MOVEMENT_SPEED_X = this.MOVEMENT_SPEED_X + 0.2f;
+			} else {
+				if(this.MOVEMENT_SPEED_X > 0.0f)
+					this.MOVEMENT_SPEED_X = this.MOVEMENT_SPEED_X - 0.03f;
+				else if(this.MOVEMENT_SPEED_X < 0.0f)
+					this.MOVEMENT_SPEED_X = this.MOVEMENT_SPEED_X + 0.03f;
+			}
 		}
 	}
 	
-	public void setY(float y) {
-		float frameHeight = height;
+	public void moveY(boolean movedByPlayer) {
+		float frameHeight = this.height;
 		float worldHeight = Main.WORLD_HEIGHT;
-		if(y > 0 && y < worldHeight - frameHeight) {
-			this.y = y;
-			this.hitbox.y = y + collisionOffset;
+		this.updateMovementSpeedY(movedByPlayer);
+		this.y = this.y + this.MOVEMENT_SPEED_Y;
+		if(this.y < 0)
+			this.y = 0;
+		else if(this.y > worldHeight - frameHeight)
+			this.y = worldHeight - frameHeight;
+		this.hitbox.y = y + collisionOffset;
+	}
+	
+	public void updateMovementSpeedY(boolean increaseMomentum) {
+		if(TimeUtils.timeSinceMillis(this.accelerationRefreshTimeY) > this.accelerationRateMillisY) {
+			this.accelerationRefreshTimeY = TimeUtils.millis();
+			if(increaseMomentum && this.MOVEMENT_SPEED_Y <= 3.0F) {
+				this.MOVEMENT_SPEED_Y = this.MOVEMENT_SPEED_Y + 0.4f;
+			} else if (this.MOVEMENT_SPEED_Y >= -3.0F) {
+				this.MOVEMENT_SPEED_Y = this.MOVEMENT_SPEED_Y - 0.5f;
+			}
 		}
 	}
 
@@ -98,13 +143,38 @@ public class Player implements Character {
 	@Override
 	public float getMovementSpeed() {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.MOVEMENT_SPEED_X;
 	}
 
 	@Override
 	public void setPoints(int points) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Sound getCollisionSound() {
+		return this.collisionSound;
+	}
+
+	public Sound getBuzzSound() {
+		return buzzSound;
+	}
+
+	@Override
+	public void setX(float x) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setY(float y) {
+		float frameHeight = height;
+		float worldHeight = Main.WORLD_HEIGHT;
+		if(y > 0 && y < worldHeight - frameHeight) {
+			this.y = y;
+			this.hitbox.y = y + collisionOffset;
+		}
 	}
 
 }

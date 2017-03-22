@@ -9,18 +9,24 @@ public class GameInput {
 	
 	public static void Keyboard(Player p, OrthographicCamera cam) {
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			p.setY(p.getY() + Player.MOVEMENT_SPEED);
-			p.setX(p.getX() - Player.MOVEMENT_SPEED);
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+			p.getBuzzSound().play(1.0f);
 			p.setLeft(true);
+			p.moveX(true);
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			p.setY(p.getY() + Player.MOVEMENT_SPEED);
-			p.setX(p.getX() + Player.MOVEMENT_SPEED);
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+			p.getBuzzSound().play(1.0f);
 			p.setLeft(false);
-		} 
+			p.moveX(true);
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+			p.moveY(true);
+		}
 		if(!Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-			p.setY(p.getY() - Player.MOVEMENT_SPEED);
+			p.moveX(false);
+		}
+		if(!Gdx.input.isKeyPressed(Input.Keys.UP)) {
+			p.moveY(false);
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.Z)) {
 			if(cam.zoom <= 3.0) {
@@ -41,20 +47,19 @@ public class GameInput {
 		float touchX = Gdx.input.getX();
 		
 		if(Gdx.input.isTouched()) {
-			p.setY(p.getY() + Player.MOVEMENT_SPEED);
+			p.getBuzzSound().play(1.0f);
+			p.setY(p.getY() + p.MOVEMENT_SPEED_Y);
 			if(touchX < screenX) {
-				p.setX(p.getX() - Player.MOVEMENT_SPEED);
+				// p.setX(p.getX() - p.MOVEMENT_SPEED_Y);
 				p.setLeft(true);
 			} else { 
-				p.setX(p.getX() + Player.MOVEMENT_SPEED);
+				// p.setX(p.getX() + p.MOVEMENT_SPEED_Y);
 				p.setLeft(false);
 			}
+			p.moveX(true);
 		} else {
-			p.setY(p.getY() - Player.MOVEMENT_SPEED);
-			if(p.isLeft())
-				p.setX(p.getX() - Player.MOVEMENT_SPEED);
-			else 
-				p.setX(p.getX() + Player.MOVEMENT_SPEED);
+			p.setY(p.getY() - p.MOVEMENT_SPEED_Y);
+			p.moveX(false);
 		}
 		
 	}

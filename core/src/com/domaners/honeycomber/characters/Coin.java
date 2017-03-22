@@ -1,6 +1,7 @@
 package com.domaners.honeycomber.characters;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
@@ -15,12 +16,15 @@ public class Coin implements Character {
 	private int width;
 	private int height;
 	int points;
+	private Sound collisionSound;
 	
 	public Coin(double x, double y) {
 		currentFrame = new Sprite(new Texture(Gdx.files.internal("Coin.png")));
 		height = 85;
 		width = 85;
 		points = 100;
+		collisionSound = Gdx.audio.newSound(Gdx.files.internal("sounds/Pickup_Coin.wav"));
+		
 		if(x == 0f && y == 0f) {
 			this.x = (float)(Math.random() * (Main.WORLD_WIDTH - width));
 			this.y = (float)(Math.random() * (Main.WORLD_HEIGHT - height));
@@ -94,6 +98,12 @@ public class Coin implements Character {
 	@Override
 	public void setPoints(int points) {
 		this.points = points;
+	}
+
+	@Override
+	public Sound getCollisionSound() {
+		// TODO Auto-generated method stub
+		return this.collisionSound;
 	}
 
 }

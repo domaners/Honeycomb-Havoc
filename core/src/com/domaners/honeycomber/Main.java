@@ -1,5 +1,6 @@
 package com.domaners.honeycomber;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -49,10 +50,14 @@ public class Main extends ApplicationAdapter {
 	}
 
 	public static void setHiScore(long hiScore) {
-		if(hiScore > Main.hiScore) 
+		if(hiScore > Main.hiScore) {
 			Main.hiScore = hiScore;
 			prefs.putLong("hi-score", hiScore);
 			prefs.flush();
+			if(Gdx.app.getType() == ApplicationType.Android) {
+				// Games.Leaderboards.submitScore(mGoogleApiClient, LEADERBOARD_ID, 1337);
+			}
+		}
 	}
 	
 }

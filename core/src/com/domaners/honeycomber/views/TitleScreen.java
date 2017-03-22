@@ -17,14 +17,16 @@ public class TitleScreen implements ViewMode {
 
 public long gameScore;
 private Sprite logo = new Sprite(new Texture(Gdx.files.internal("logo.png")));
+private Sprite studioName = new Sprite(new Texture(Gdx.files.internal("studio_name.png")));
+private Sprite touchScreenToStart = new Sprite(new Texture(Gdx.files.internal("TOUCH-SCREEN-TO-START.png")));
+private Sprite pressSpaceToStart = new Sprite(new Texture(Gdx.files.internal("PUSH-SPACE-BAR-TO-START.png")));
+
 private BackgroundElement[] bg = new BackgroundElement[2];
 
 	public TitleScreen() {
 		
 		bg[0] = new BackgroundElement(0, 0);
 		bg[1] = new BackgroundElement(bg[0].getWidth(), 0);
-		
-		// bg[1] = new Sprite(new Texture(Gdx.files.internal("Sky.png")));
 		cam.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
 	
 	}
@@ -45,13 +47,12 @@ private BackgroundElement[] bg = new BackgroundElement[2];
 			}
 			batch.draw(b.getSprite(), b.getX(), b.getY());
 		}
-		batch.draw(logo, centreAlignX(logo.getRegionWidth()), centreAlignY(logo.getRegionHeight()));
-		font.draw(batch, "THIS IS 'BEE GAME'", 0, 100);
-		font.draw(batch, "A STUDIO DOMANERS PRODUCTION", 0, 480);
+		batch.draw(logo, centreAlignX(logo.getRegionWidth()), centreAlignY(logo.getRegionHeight()) + 100);
+		batch.draw(studioName, centreAlignX(studioName.getRegionWidth()), centreAlignY(logo.getRegionHeight()) - 300);
 		if(Gdx.app.getType() == ApplicationType.Desktop) {
-			font.draw(batch, "PRESS SPACE BAR TO START", 0, 460);
+			batch.draw(pressSpaceToStart, centreAlignX(pressSpaceToStart.getRegionWidth()), centreAlignY(logo.getRegionHeight() + 200));
 		} else if (Gdx.app.getType() == ApplicationType.Android) {
-			font.draw(batch, "TOUCH SCREEN TO START", 0, 440);
+			batch.draw(touchScreenToStart, centreAlignX(touchScreenToStart.getRegionWidth()), centreAlignY(logo.getRegionHeight() + 200));
 		}
 		batch.end();
 		

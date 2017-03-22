@@ -14,7 +14,9 @@ import static com.domaners.honeycomber.Main.*;
 import com.domaners.honeycomber.characters.Character;
 import com.domaners.honeycomber.characters.Coin;
 import com.domaners.honeycomber.characters.Player;
+import com.domaners.honeycomber.characters.Thistle;
 import com.domaners.honeycomber.characters.Wasp;
+import com.domaners.honeycomber.GraphicsUtils;
 import com.domaners.honeycomber.Main;
 import com.domaners.honeycomber.input.GameInput;
 
@@ -22,6 +24,7 @@ public class InGame implements ViewMode {
 
 	static final int MAX_COLLECTIBLES = 10;
 	public static long gameScore;
+	public static long nextThousand;
     static long startTime;
     
     Player p;
@@ -32,11 +35,13 @@ public class InGame implements ViewMode {
 		
 		cam.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
 		startTime = TimeUtils.millis();
-		p = new Player(0f, 0f);
+		nextThousand = 100L;
+		p = new Player(WORLD_WIDTH / 2, 0f);
         gameScore = 0;
         bg = new Sprite(new Texture(Gdx.files.internal("Sky.png")), WORLD_WIDTH, WORLD_HEIGHT);
         bg.setX(0f);
         bg.setY(0f);
+        co.add(new Thistle());
         
 	}
 	
@@ -49,8 +54,6 @@ public class InGame implements ViewMode {
 			batch.setProjectionMatrix(cam.combined);
 			batch.begin();
 			batch.draw(bg, bg.getX(), bg.getY(), WORLD_WIDTH, WORLD_HEIGHT);
-			font.draw(batch, "   Score: " + gameScore, 0, 50);
-			font.draw(batch, "Hi Score: " + Main.getHiScore(), 0, 70);
 			batch.draw(p.getSprite(), p.getX(), p.getY(), p.getWidth(), p.getHeight());
 			for(Character ch : co) {
 				if(ch instanceof Wasp) {
@@ -68,10 +71,13 @@ public class InGame implements ViewMode {
 						ch.setPoints(ch.getPoints() - 1);
 					}
 				}
-				batch.draw(ch.getSprite().getTexture(), ch.getX(), ch.getY(), ch.getWidth(), ch.getWidth());
+				batch.draw(ch.getSprite().getTexture(), ch.getX(), ch.getY(), ch.getWidth(), ch.getHeight());
 				if(Main.debug)
 					font.draw(batch, Integer.toString(ch.getPoints()), ch.getX(), ch.getY());
 			}
+			font.draw(batch, "   Score: " + gameScore, 0, 50);
+			font.draw(batch, "Hi Score: " + Main.getHiScore(), 0, 70);
+			font.draw(batch, "SPEED X: " + p.getMovementSpeed(), WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
 			batch.end();
 		}
 		
@@ -98,9 +104,12 @@ public class InGame implements ViewMode {
 			if(b) {
 				System.out.println("COIN!");
 				if(cha.get(i) instanceof Coin) {
+					cha.get(i).getCollisionSound().play();
 					gameScore += cha.get(i).getPoints();
 					cha.remove(i);
 				} else if (cha.get(i) instanceof Wasp) {
+					Main.viewMode = new DeathScreen(gameScore);
+				} else if (cha.get(i) instanceof Thistle) {
 					Main.viewMode = new DeathScreen(gameScore);
 				}
 			}

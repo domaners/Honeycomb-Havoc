@@ -1,6 +1,7 @@
 package com.domaners.honeycomber.characters;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,6 +19,7 @@ public class BackgroundElement implements Character {
 	int points;
 	private int movementSpeed = 50;
 	private long animateTime;
+	private Sound collisionSound;
 	
 	public BackgroundElement(double x, double y) {
 	
@@ -42,43 +44,36 @@ public class BackgroundElement implements Character {
 	
 	@Override
 	public Rectangle getHitbox() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.hitbox;
 	}
 
 	@Override
 	public void setHitbox(Rectangle hitbox) {
-		// TODO Auto-generated method stub
-
+		this.hitbox = hitbox;
 	}
 
 	@Override
 	public int getPoints() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.points;
 	}
 
 	@Override
 	public void setPoints(int points) {
-		// TODO Auto-generated method stub
-
+		this.points = points;
 	}
 
 	@Override
 	public Sprite getSprite() {
-		// TODO Auto-generated method stub
 		return currentFrame;
 	}
 
 	@Override
 	public float getX() {
-		// TODO Auto-generated method stub
 		return this.x;
 	}
 
 	@Override
 	public float getY() {
-		// TODO Auto-generated method stub
 		return this.y;
 	}
 
@@ -94,13 +89,11 @@ public class BackgroundElement implements Character {
 
 	@Override
 	public int getWidth() {
-		// TODO Auto-generated method stub
 		return this.width;
 	}
 
 	@Override
 	public int getHeight() {
-		// TODO Auto-generated method stub
 		return this.height;
 	}
 
@@ -118,8 +111,12 @@ public class BackgroundElement implements Character {
 
 	@Override
 	public float getMovementSpeed() {
-		// TODO Auto-generated method stub
 		return this.movementSpeed;
+	}
+
+	@Override
+	public Sound getCollisionSound() {
+		return this.collisionSound;
 	}
 	
 }

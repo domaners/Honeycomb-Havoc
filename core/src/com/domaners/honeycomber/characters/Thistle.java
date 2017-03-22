@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.domaners.honeycomber.Main;
 import com.domaners.honeycomber.views.InGame;
 
-public class Wasp implements Character {
+public class Thistle implements Character {
 
 	float x;
 	float y;
@@ -19,14 +19,13 @@ public class Wasp implements Character {
 	final float MOVEMENT_SPEED;
 	Sound collisionSound;
 	
-	public Wasp() {
-		System.out.println("Wasp: ");
-		currentFrame = new Sprite(new Texture(Gdx.files.internal("wasp.jpg")));
-		width = 100;
-		height = 100;
-		this.y = (float)(Math.random() * (Main.WORLD_HEIGHT - height));
-		this.x = Main.WORLD_WIDTH;
-		hitbox = new Rectangle((float)this.x + 10, (float)this.y + 10, height - 20, width - 20);
+	public Thistle() {
+		currentFrame = new Sprite(new Texture(Gdx.files.internal("thistle.png")));
+		width = 50;
+		height = Main.WORLD_HEIGHT;
+		this.y = 0F;
+		this.x = 0F;
+		hitbox = new Rectangle((float)this.x, (float)this.y, width, height);
 		MOVEMENT_SPEED = (float) (InGame.gameScore / 2000) + 2.0f;
 	}
 	
@@ -37,8 +36,7 @@ public class Wasp implements Character {
 
 	@Override
 	public void setHitbox(Rectangle hitbox) {
-		// TODO Auto-generated method stub
-
+		this.hitbox = hitbox;
 	}
 
 	@Override
@@ -69,8 +67,8 @@ public class Wasp implements Character {
 
 	@Override
 	public void setY(float y) {
-		// TODO Auto-generated method stub
-
+		this.y = y;
+		this.hitbox.y = y;
 	}
 
 	@Override
