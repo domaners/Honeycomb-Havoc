@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.domaners.honeycomber.Main;
 import com.domaners.honeycomber.characters.BackgroundElement;
 import com.domaners.honeycomber.input.TitleScreenInput;
 
@@ -54,6 +55,7 @@ private BackgroundElement[] bg = new BackgroundElement[2];
 		} else if (Gdx.app.getType() == ApplicationType.Android) {
 			batch.draw(touchScreenToStart, centreAlignX(touchScreenToStart.getRegionWidth()), centreAlignY(logo.getRegionHeight() + 200));
 		}
+		batch.draw(this.getSoundMuteImage(), Main.WORLD_WIDTH - 100, Main.WORLD_HEIGHT - 100, 50, 50);
 		batch.end();
 		
 		if(Gdx.app.getType() == ApplicationType.Desktop) {
@@ -63,6 +65,16 @@ private BackgroundElement[] bg = new BackgroundElement[2];
 		}
 		
 		cam.update();
+		
+	}
+	
+	private Texture getSoundMuteImage() {
+		
+		if(Main.getGameVolume() == 0f) {
+			return new Texture(Gdx.files.internal("mute-icon-on.png"));
+		} else {
+			return new Texture(Gdx.files.internal("mute-icon-off.png"));
+		}
 		
 	}
 

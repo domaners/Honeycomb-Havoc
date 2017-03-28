@@ -30,5 +30,6 @@ public interface Character {
 	public void setY(float y);
 	public int getWidth();
 	public int getHeight();
+	public void dispose();
 	
 }

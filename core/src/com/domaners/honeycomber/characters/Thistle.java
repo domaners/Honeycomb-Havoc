@@ -18,6 +18,8 @@ public class Thistle implements Character {
 	private int height;
 	final float MOVEMENT_SPEED;
 	Sound collisionSound;
+	private final int DIFFICULTY_OFFSET = 10;
+	private long lastMovedScore;
 	
 	public Thistle() {
 		currentFrame = new Sprite(new Texture(Gdx.files.internal("thistle.png")));
@@ -27,6 +29,7 @@ public class Thistle implements Character {
 		this.x = 0F;
 		hitbox = new Rectangle((float)this.x, (float)this.y, width, height);
 		MOVEMENT_SPEED = (float) (InGame.gameScore / 2000) + 2.0f;
+		lastMovedScore = InGame.gameScore;
 	}
 	
 	@Override
@@ -51,6 +54,7 @@ public class Thistle implements Character {
 
 	@Override
 	public float getX() {
+		this.setX(this.x + this.getDifficultyOffset());
 		return this.x;
 	}
 
@@ -98,4 +102,25 @@ public class Thistle implements Character {
 		return this.collisionSound;
 	}
 
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getDifficultyOffset() {
+		
+		long currentScore = InGame.gameScore;
+		if(currentScore - this.lastMovedScore >= 200) {
+			this.lastMovedScore = InGame.gameScore;
+			return DIFFICULTY_OFFSET;
+		} else {
+			return 0;
+		}
+		
+	}
+
+	public void setLastMovedScore(long lastMovedScore) {
+		this.lastMovedScore = lastMovedScore;
+	}
 }

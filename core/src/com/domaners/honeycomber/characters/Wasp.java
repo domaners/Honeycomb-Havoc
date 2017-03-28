@@ -20,10 +20,9 @@ public class Wasp implements Character {
 	Sound collisionSound;
 	
 	public Wasp() {
-		System.out.println("Wasp: ");
-		currentFrame = new Sprite(new Texture(Gdx.files.internal("wasp.jpg")));
-		width = 100;
-		height = 100;
+		currentFrame = new Sprite(new Texture(Gdx.files.internal("wasp.png")));
+		width = 150;
+		height = 150;
 		this.y = (float)(Math.random() * (Main.WORLD_HEIGHT - height));
 		this.x = Main.WORLD_WIDTH;
 		hitbox = new Rectangle((float)this.x + 10, (float)this.y + 10, height - 20, width - 20);
@@ -98,6 +97,12 @@ public class Wasp implements Character {
 	@Override
 	public Sound getCollisionSound() {
 		return this.collisionSound;
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

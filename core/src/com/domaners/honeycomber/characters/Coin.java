@@ -19,7 +19,7 @@ public class Coin implements Character {
 	private Sound collisionSound;
 	
 	public Coin(double x, double y) {
-		currentFrame = new Sprite(new Texture(Gdx.files.internal("Coin.png")));
+		this.currentFrame = new Sprite(new Texture(Gdx.files.internal("Coin.png")));
 		height = 85;
 		width = 85;
 		points = 100;
@@ -54,7 +54,7 @@ public class Coin implements Character {
 	@Override
 	public Sprite getSprite() {
 		// TODO Auto-generated method stub
-		return currentFrame;
+		return this.currentFrame;
 	}
 
 	@Override
@@ -102,8 +102,13 @@ public class Coin implements Character {
 
 	@Override
 	public Sound getCollisionSound() {
-		// TODO Auto-generated method stub
 		return this.collisionSound;
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

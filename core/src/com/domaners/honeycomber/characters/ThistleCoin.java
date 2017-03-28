@@ -5,10 +5,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.domaners.honeycomber.Main;
 
-public class BackgroundElement implements Character {
+public class ThistleCoin implements Character {
 
 	float x;
 	float y;
@@ -17,31 +16,25 @@ public class BackgroundElement implements Character {
 	private int width;
 	private int height;
 	int points;
-	private int movementSpeed = 50;
-	private long animateTime;
 	private Sound collisionSound;
 	
-	public BackgroundElement(double x, double y) {
-	
-		Texture tx = new Texture(Gdx.files.internal("Sky.png"));
-		currentFrame = new Sprite(tx);
-		height = tx.getHeight();
-		width = tx.getWidth();
-		points = 100;
-		this.x = (float)x;
-		this.y = (float)y;
+	public ThistleCoin(double x, double y) {
+		this.currentFrame = new Sprite(new Texture(Gdx.files.internal("thistle-coin.png")));
+		height = 85;
+		width = 85;
+		points = 300;
+		collisionSound = Gdx.audio.newSound(Gdx.files.internal("sounds/Pickup_Coin.wav"));
+		
+		if(x == 0f && y == 0f) {
+			this.x = (float)(Math.random() * (Main.WORLD_WIDTH - width));
+			this.y = (float)(Math.random() * (Main.WORLD_HEIGHT - height));
+		} else {
+			this.x = (float)x;
+			this.y = (float)y;
+		}
 		hitbox = new Rectangle((float)this.x, (float)this.y, height, width);
-		animateTime = TimeUtils.millis();
-	
 	}
-	
-	public BackgroundElement(double x, double y, int speed) {
-		
-		this(x, y);
-		this.movementSpeed = speed;
-		
-	}
-	
+
 	@Override
 	public Rectangle getHitbox() {
 		return this.hitbox;
@@ -49,7 +42,8 @@ public class BackgroundElement implements Character {
 
 	@Override
 	public void setHitbox(Rectangle hitbox) {
-		this.hitbox = hitbox;
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -58,13 +52,9 @@ public class BackgroundElement implements Character {
 	}
 
 	@Override
-	public void setPoints(int points) {
-		this.points = points;
-	}
-
-	@Override
 	public Sprite getSprite() {
-		return currentFrame;
+		// TODO Auto-generated method stub
+		return this.currentFrame;
 	}
 
 	@Override
@@ -80,6 +70,7 @@ public class BackgroundElement implements Character {
 	@Override
 	public void setX(float x) {
 		this.x = x;
+		this.hitbox.x = x;
 	}
 
 	@Override
@@ -87,31 +78,23 @@ public class BackgroundElement implements Character {
 		this.y = y;
 	}
 
-	@Override
-	public int getWidth() {
-		return this.width;
-	}
-
-	@Override
 	public int getHeight() {
-		return this.height;
+		return height;
 	}
 
-	public long getAnimateTime() {
-		return this.animateTime;
-	}
-
-	public void setAnimateTime(long animateTime) {
-		this.animateTime = animateTime;
-	}
-
-	public void setMovementSpeed(int movementSpeed) {
-		this.movementSpeed = movementSpeed;
+	public int getWidth() {
+		return width;
 	}
 
 	@Override
 	public float getMovementSpeed() {
-		return this.movementSpeed;
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setPoints(int points) {
+		this.points = points;
 	}
 
 	@Override

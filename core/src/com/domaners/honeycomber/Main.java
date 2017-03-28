@@ -13,20 +13,19 @@ public class Main extends ApplicationAdapter {
 	public static final int WORLD_WIDTH = 450;
     public static final int WORLD_HEIGHT = 800;
     private static long hiScore = 0;
-    public static final String BUILD_NO = "v0.06";
-	public static final boolean debug = true;
+    public static final String BUILD_NO = "v0.07";
+	public static final boolean debug = false;
 	public static Preferences prefs;
 	public static final long REFRESH_RATE = 1000 / 30; // 30 FPS animation speed
+	private static float gameVolume = 0f;
     
 	@Override
 	public void create () {
 	
 		prefs = Gdx.app.getPreferences("save-data");
-		try {
-			hiScore = prefs.getLong("hi-score");
-		} catch (Exception e) {
-			prefs.putLong("hi-score", 0);
-		}
+		hiScore = prefs.getLong("hi-score");
+		gameVolume = prefs.getFloat("game-volume");
+		
 		Gdx.graphics.setWindowedMode(WORLD_WIDTH, WORLD_HEIGHT);
 		Gdx.graphics.setTitle("Honeycomb Havoc");
 		
@@ -47,6 +46,15 @@ public class Main extends ApplicationAdapter {
 
 	public static long getHiScore() {
 		return hiScore;
+	}
+	
+	public static float getGameVolume() {
+		return gameVolume;
+	}
+	
+	public static void setGameVolume(float soundMuted) {
+		Main.gameVolume = soundMuted;
+		prefs.putFloat("game-volume", 0f);
 	}
 
 	public static void setHiScore(long hiScore) {

@@ -1,18 +1,25 @@
 package com.domaners.honeycomber.characters;
 
 import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.domaners.honeycomber.Main;
+import com.domaners.honeycomber.GraphicsUtils;
 
 public class Player implements Character {
 
+	public enum playerState { flyLeft, flyRight, restLeft, restRight };
+	public playerState animationState;
+	
 	float x;
 	float y;
-	Sprite currentFrame;
+	Animation<TextureRegion> playerFlyRight, playerFlyLeft, playerRestLeft, playerRestRight;
 	Rectangle hitbox;
 	public int width;
 	public int height;
@@ -24,10 +31,17 @@ public class Player implements Character {
 	long accelerationRateMillisX, accelerationRateMillisY;
 	long accelerationRefreshTimeX = TimeUtils.millis();
 	long accelerationRefreshTimeY = TimeUtils.millis();
+	float animationTime = 0.0f;
 
 	public Player(float x, float y) {
+		
+		playerFlyRight = GraphicsUtils.createAnimation(new Texture(Gdx.files.internal("player-fly-right.png")), 2, 1);
+		playerFlyLeft = GraphicsUtils.createAnimation(new Texture(Gdx.files.internal("player-fly-left.png")), 2, 1);
+		playerRestRight = GraphicsUtils.createAnimation(new Texture(Gdx.files.internal("player-rest-right.png")), 1, 1);
+		playerRestLeft = GraphicsUtils.createAnimation(new Texture(Gdx.files.internal("player-rest-left.png")), 1, 1);
+		
 		buzzSound = Gdx.audio.newSound(Gdx.files.internal("sounds/playerBuzz.wav"));
-		currentFrame = new Sprite(new Texture(Gdx.files.internal("player.png")));
+		// currentFrame = new Sprite(new Texture(Gdx.files.internal("player.png")));
 		width = 80;
 		height = 80;
 		hitbox = new Rectangle(x + collisionOffset, y + collisionOffset, height - (collisionOffset * 2), width - (collisionOffset * 2));
@@ -37,6 +51,33 @@ public class Player implements Character {
 		accelerationRefreshTimeX = TimeUtils.millis();
 		accelerationRateMillisY = 1L;
 		accelerationRefreshTimeY = TimeUtils.millis();
+		animationState = playerState.restRight;
+	}
+	
+	public TextureRegion getCurrentAnimation() {
+		
+		TextureRegion currentFrame;
+		animationTime += Gdx.graphics.getDeltaTime();
+		
+		switch(this.animationState) {
+		
+		case flyLeft: 
+			currentFrame = playerFlyLeft.getKeyFrame(animationTime, true);
+			break;
+		case flyRight:
+			currentFrame = playerFlyRight.getKeyFrame(animationTime, true);
+			break;
+		case restLeft:
+			currentFrame = playerRestLeft.getKeyFrame(animationTime, true);
+			break;
+		default:
+			currentFrame = playerRestRight.getKeyFrame(animationTime, true);
+			break;
+			
+		}
+
+		return currentFrame;
+		
 	}
 	
 	public boolean isLeft() {
@@ -175,6 +216,11 @@ public class Player implements Character {
 			this.y = y;
 			this.hitbox.y = y + collisionOffset;
 		}
+	}
+
+	@Override
+	public void dispose() {
+		this.buzzSound.stop();
 	}
 
 }
